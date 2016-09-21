@@ -28,32 +28,43 @@ end
 function GameScene:initInformation()
     
     self:initRequire()
+    self:initAudio()
+    
+    math.randomseed(os.time())
     
     local function callback_rotation(sender, eventType)
         if eventType == ccui.TouchEventType.ended then                 
-            local layer = initLayer.create()
-            GLOBAL_INSTANCE_SCENE:addChild(layer)
+            local layer = MainUI.create()
+            layer:addto(GLOBAL_INSTANCE_SCENE, 10)
         end
     end
 
-    local bt = ccui.Button:create("myRes/an_15.png")
+    local bt = UIButton.create("myRes/an_15.png")
     bt:setPosition(self:getContentSize().width/2, 100)
     self:addChild(bt)
     bt:addTouchEventListener(callback_rotation) 
+    bt:addLabel("进入游戏")
     
-    local label = cc.Label:createWithSystemFont("进入", "Arial", 26)
-    label:setPosition(bt:getContentSize().width/2, bt:getContentSize().height/2)
-    bt:addChild(label)
+    --
+    local light = cc.AmbientLight:create(cc.c3b(0,255,0))--cc.PointLight:create(cc.vec3(50,50,50), cc.c3b(0,255,0), 50)
+    light:setPosition3D(cc.vec3(200, 200, 50)) --setPosition(300,300)
+    self:addChild(light, 100)
+    light:setEnabled(true)
+    light:setIntensity(200)
     
 end
 
-function GameScene:initRequire()
-    
+--加载头文件
+function GameScene:initRequire()   
     require "common.common"
-    require "layer.layer"
-    
+    require "layer.layer"   
 end
 
+--加载通用音乐/音效
+function  GameScene:initAudio()
+    --音效
+    cc.SimpleAudioEngine:getInstance():preloadEffect("audio/click_1.wav")
+end
 
 
 

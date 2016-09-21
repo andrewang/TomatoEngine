@@ -4,7 +4,7 @@ cc.FileUtils:getInstance():addSearchPath("res")
 
 -- CC_USE_DEPRECATED_API = true
 require "cocos.init"
-require "layer.init.GameScene"
+require "GameScene"
 
 -- cclog
 local cclog = function(...)
