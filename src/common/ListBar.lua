@@ -1,7 +1,9 @@
 --[[
-	滑动列表 --鼠标悬垂效果
+	滑动列表 --鼠标悬停效果
 	锚点:(0, 0)
     默认是垂直，如果要水平，要在添加item前，设置方向-setDirection
+    
+    目前存在的一个大问题就是，图层无法屏蔽掉鼠标监听事件 --或者只能手动listener:setEnabled(false)
 --]]
 
 ListBar = class("ListBar", function() return cc.Layer:create() end)
@@ -30,9 +32,8 @@ function ListBar:ctor(selFontColor, selPic)
 end
 
 function ListBar:pushBackCustomItem(text, textSize, textColor)
-    if not self._mouseEvent then
+    if not self._listener then
         self:registerMouseEvent()
-        self._mouseEvent = true
     end
     
     local sp = cc.Sprite:create(self._selPic)
@@ -53,6 +54,7 @@ function ListBar:pushBackCustomItem(text, textSize, textColor)
     self:addChild(label, 2)
     self._labels[#self._labels+1] = label
 end
+
 --1:vertical  2:horizontal
 function ListBar:setDirection(dirIndex)
     if dirIndex == dir.vertical then
@@ -63,23 +65,21 @@ function ListBar:setDirection(dirIndex)
     end   
 end
 
---callback:  function callback(tag) end
+--如果在此界面有图层的话，只能用这种方法先关闭鼠标监听事件,等回到此图层时再开启
+function ListBar:setEnabled(isEnabled)
+    self._listener:setEnabled(isEnabled)
+end
+
+--callback:  function callback(tag) end   tag:表示点击第几个item
 function ListBar:registerScriptHandler(callback)
     self._callback = callback
 end
 
 function ListBar:registerMouseEvent()
     local function onMouseUp(event)
-        local x = event:getCursorX()
-        local y = event:getCursorY()   
-        local pos = self:convertToNodeSpace(cc.p(x, y))
-
-        for i,v in pairs(self._sps) do
-            if cc.rectContainsPoint(v:getBoundingBox(), pos) then
-                if self._callback then
-                    self._callback(i)
-                end
-                break
+        if self._callback then
+            if self._lastIndex ~= 0 then
+                self._callback(self._lastIndex)
             end
         end
     end
@@ -112,7 +112,7 @@ function ListBar:registerMouseEvent()
             end
             num = num + 1
         end
-        if num == #self._sps then--鼠标不在ListBar内
+        if num == #self._sps then--鼠标不在ListBar范围内
             self._lastIndex = 0
         end
     end
@@ -121,6 +121,7 @@ function ListBar:registerMouseEvent()
     local listener = cc.EventListenerMouse:create()
     listener:registerScriptHandler(onMouseUp, cc.Handler.EVENT_MOUSE_UP)
     listener:registerScriptHandler(onMouseMove, cc.Handler.EVENT_MOUSE_MOVE)
+    self._listener = listener
     
     self:getEventDispatcher():addEventListenerWithSceneGraphPriority(listener, self)
 end

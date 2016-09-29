@@ -73,7 +73,8 @@ function MainUI:initView()
             if not self._menuLayer[5] then
                 local layer = cc.Layer:create()
                 local bg = cc.Sprite:create("myRes/bg_5.png")
-                bg:setPosition(layer:getContentSize().width/2, layer:getContentSize().height/2)
+                bg:setAnchorPoint(cc.p(0,0))
+                --bg:setPosition(layer:getContentSize().width/2, layer:getContentSize().height/2)
                 layer:addChild(bg) 
                 self:addChild(layer)
                 self._menuLayer[5] = layer
@@ -132,17 +133,13 @@ function MainUI:initView()
     --local function shot()
     --end
     
-    local render = cc.RenderTexture:create(200,200)
-    render:setVirtualViewport(cc.p(0, 0),cc.rect(0,0,200,200), cc.rect(0,0,100,100))
-    render:begin()
-    self:visit() --哪个节点去visit()，就渲染那个节点包括所有子节点，
-    render:endToLua() --原本是end(),因为end是lua中的关键字，所以改成endToLua
-    
-    render:saveToFile("myPic.png", cc.IMAGE_FORMAT_PNG) --这个后面也有设置回调函数 —添加回调函数会报错
-    
-    local light = cc.AmbientLight:create(cc.c3b(0,255,0))--cc.PointLight:create(cc.vec3(50,50,50), cc.c3b(0,255,0), 50)
-    light:setPosition3D(cc.vec3(200, 200, 50)) --setPosition(300,300)
-    self:addChild(light, 100)
+--    local render = cc.RenderTexture:create(200,200)
+--    render:setVirtualViewport(cc.p(0, 0),cc.rect(0,0,200,200), cc.rect(0,0,100,100))
+--    render:begin()
+--    self:visit() --哪个节点去visit()，就渲染那个节点包括所有子节点，
+--    render:endToLua() --原本是end(),因为end是lua中的关键字，所以改成endToLua
+--    
+--    render:saveToFile("myPic.png", cc.IMAGE_FORMAT_PNG) --这个后面也有设置回调函数 —添加回调函数会报错
         
 end
 

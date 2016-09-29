@@ -35,7 +35,7 @@ function GameScene:initInformation()
     local function callback_rotation(sender, eventType)
         if eventType == ccui.TouchEventType.ended then                 
             local layer = MainUI.create()
-            layer:addto(GLOBAL_INSTANCE_SCENE, 10)
+            layer:addto(GLOBAL_INSTANCE_SCENE)
         end
     end
 
@@ -44,13 +44,6 @@ function GameScene:initInformation()
     self:addChild(bt)
     bt:addTouchEventListener(callback_rotation) 
     bt:addLabel("进入游戏")
-    
-    --
-    local light = cc.AmbientLight:create(cc.c3b(0,255,0))--cc.PointLight:create(cc.vec3(50,50,50), cc.c3b(0,255,0), 50)
-    light:setPosition3D(cc.vec3(200, 200, 50)) --setPosition(300,300)
-    self:addChild(light, 100)
-    light:setEnabled(true)
-    light:setIntensity(200)
     
 end
 

@@ -57,7 +57,7 @@ function setSpriteGray(sprite)
         state = cc.GLProgramState:getOrCreateWithGLProgram(glprogram)
     end
     sprite:setGLProgramState(state)
-end
+end 
 
 --shader:正常
 function setSpriteNormal(sprite)

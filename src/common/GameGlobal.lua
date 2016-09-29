@@ -11,3 +11,4 @@ GAME_GLOBAL_TOAST_MOVE_DIS              = 50
 --固定层级
 GAME_GLOBAL_TOAST_ZORDER                = 1000 --吐司
 
+
